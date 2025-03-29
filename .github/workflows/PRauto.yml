@@ -9,6 +9,9 @@ jobs:
   create-pr:
     name: PR creation automation
     runs-on: ubuntu-latest
+    permissions:
+      contents: write   # Permiso para crear ramas y commits
+      pull-requests: write  # Permiso para crear PRs
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -16,7 +19,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
         with:
-          base: main                       # Rama destino
-          branch: ${{ github.ref_name }}   # Rama desde la que se crea la PR
+          base: main
+          branch: ${{ github.ref_name }}
           title: 'Auto-generated PR - Made by the team'
           body: 'Este PR fue creado automáticamente. - Made by the team'
