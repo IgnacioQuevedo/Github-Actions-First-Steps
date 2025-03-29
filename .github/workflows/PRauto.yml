@@ -15,7 +15,8 @@ jobs:
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v6
-        with: 
-          branch: main
+        with:
+          base: main                       # Rama destino
+          branch: ${{ github.ref_name }}   # Rama desde la que se crea la PR
           title: 'Auto-generated PR - Made by the team'
           body: 'Este PR fue creado automáticamente. - Made by the team'
