@@ -52,4 +52,4 @@ jobs:
             This is to show automatic PR creation
           token: ${{ secrets.GITHUB_TOKEN }}
           commit: false  # Evita crear un commit automatizado
-          delete-branch: true
+          delete-branch: false
