@@ -16,6 +16,8 @@ jobs:
       # Checkout the code from the repository
       - name: checking out code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Importante para traer todo el historial y commits originales
 
       # Extract git commit data (optional, you can keep it if needed)
       - name: extract git commit data
@@ -24,7 +26,9 @@ jobs:
       # Get the last commit message and store it in an environment variable
       - name: Get last commit message
         id: get_commit_message
-        run: echo "COMMIT_MSG=$(git log -1 --pretty=%B)" >> $GITHUB_ENV
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B | tr -d '\n' | tr -d '\r')
+          echo "COMMIT_MSG=$COMMIT_MSG" >> $GITHUB_ENV
 
       # Get the current branch name and store it in an environment variable
       - name: Get current branch name
@@ -39,7 +43,7 @@ jobs:
       - name: Raise PR
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: "${{ env.BRANCH_NAME }}"  # Usa la rama original como base para la PR
+          branch: "${{ env.BRANCH_NAME }}"  # Usa la rama original para la PR
           base: main
           # Usa el mensaje del commit como título de la PR
           title: "${{ env.COMMIT_MSG }}"
@@ -47,4 +51,5 @@ jobs:
           body: |
             This is to show automatic PR creation
           token: ${{ secrets.GITHUB_TOKEN }}
+          commit: false  # Evita crear un commit automatizado
           delete-branch: true
