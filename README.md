@@ -1,6 +1,3 @@
 # Github-Actions-First-Steps
 
-
-hola como estas
-
-asdasd
+Esto es una prueba para visualizar si la PR se crea de forma automatica.
