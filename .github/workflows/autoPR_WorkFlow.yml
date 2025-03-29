@@ -35,10 +35,6 @@ jobs:
         id: get_branch
         run: echo "BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
 
-      # Update author information (optional, if needed for your workflow)
-      - name: Update Author Information
-        run: echo ${{ env.GIT_COMMIT_AUTHOR_NAME }} > AUTHOR
-
       # Create and raise a pull request with the correct commit message and branch name
       - name: Raise PR
         uses: peter-evans/create-pull-request@v3
