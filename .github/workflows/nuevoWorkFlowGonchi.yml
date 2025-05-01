@@ -1,0 +1,48 @@
+name: "Lint PR"
+
+on:
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - reopened
+
+jobs:
+  main:
+    name: Validate PR title
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    steps:
+      - uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # Tipos permitidos según Conventional Commits
+          types: |
+            fix
+            feat
+          # Scopes permitidos (core, ui y tickets estilo JIRA)
+          scopes: |
+            core
+            ui
+            JIRA-\d+
+          # Requiere que siempre se indique el scope
+          requireScope: true
+          # Scopes no permitidos
+          disallowScopes: |
+            release
+            [A-Z]+
+          # Regex para que el subject no empiece con mayúscula
+          subjectPattern: ^(?![A-Z]).+$
+          subjectPatternError: |
+            The subject "{subject}" found in the pull request title "{title}"
+            didn't match the configured pattern. Please ensure that the subject
+            doesn't start with an uppercase character.
+          # Ignorar validación si el PR tiene alguno de estos labels
+          ignoreLabels: |
+            bot
+            ignore-semantic-pull-request
+          # Cómo parsear el título del PR
+          headerPattern: '^(\w*)(?:\(([\w$.\-*/ ]*)\))?: (.*)$'
+          headerPatternCorrespondence: type, scope, subject
